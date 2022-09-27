@@ -1,27 +1,19 @@
-// const bookModel = require('../model/bookModel')
-// const userModel = require("../model/userModel")
-// const reviewModel = require("../model/reviewModel")
 const mongoose = require("mongoose")
 const moment = require("moment")
 const ObjectId = mongoose.Types.ObjectId.isValid
 
-
-
 const createBookMW = async function (req, res, next) {
     try {
-
         let data = req.body;
         if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "please enter require data to create Book" })
 
         let { title, excerpt, userId, ISBN, category, subcategory, reviews, releasedAt, isDeleted, ...rest } = data;
-
 
         if (Object.keys(rest).length > 0) return res.status(400).send({ status: false, message: `You can not fill these:-( ${Object.keys(rest)} ) data ` })
 
         if (!title) return res.status(400).send({ status: false, message: "Title is mandatory" })
 
         if (typeof (title) !== "string") return res.status(400).send({ status: false, message: "Title will be in string format only" })
-
 
         if (!excerpt) return res.status(400).send({ status: false, message: "Excerpt is mandatory" })
 
@@ -55,13 +47,8 @@ const createBookMW = async function (req, res, next) {
         if (!date.isValid()) return res.status(400).send({ status: false, message: "Enter Date in valid format eg. (YYYY-MM-DD)...!" })
         data.releasedAt = date
 
-        // if (!/^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/.test(releasedAt)) return res.status(400).send({ status: false, message: "Enter date in YYYY-MM-DD format (only 19th and 20 centuries date is applicable." });
-        // releasedAt = moment(releasedAt).format('YYYY-MM-DD')
-        // data['releasedAt'] = releasedAt
-
         if (isDeleted) { data.isDeleted = false }
         next()
-
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })

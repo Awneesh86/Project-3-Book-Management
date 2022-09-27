@@ -2,41 +2,30 @@ const userModel = require("../model/userModel")
 const jwt = require('jsonwebtoken')
 const { validEmail } = require("../validation/validUser.js")
 
-
 //<----------------------Create User API --------------------->
 const createUser = async function (req, res) {
 	try {
 		const body = req.body
 		const { title, name, phone, email, password, address } = req.body
 
-
-		//  ------- checking uniqueness of phone no. -------
+//  ------- checking uniqueness of phone no. -------
 		let phone_in_DB = await userModel.findOne({ phone: phone })
 		if (phone_in_DB) return res.status(409).send({ status: false, message: "Phone no. is already registered" })
 
-
-		//  ---------checking uniqueness of email ---------
+//  ---------checking uniqueness of email ---------
 		let email_in_DB = await userModel.findOne({ email: email })
 		if (email_in_DB) return res.status(409).send({ status: false, message: "Email is already registered" })
 
-
-		//  -------------- creating new user --------------
+//  -------------- creating new user --------------
 		const newUser = await userModel.create(body)
 		return res.status(201).send({ status: true, message: "User successfully Registerd", data: newUser })
 	}
 	catch (err) {
 		return res.status(500).send({ status: false, message: err.message })
 	}
-
-
 }
 
-
-
-
 //<---------------------- User Login API --------------------->
-//Salman 
-
 const userLogin = async function (req, res) {
 	try {
 		const body = req.body
@@ -57,7 +46,7 @@ const userLogin = async function (req, res) {
 		let token = jwt.sign(
 			{
 				userId: userInDb._id.toString(),
-				exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 ), // After 10 min it will expire //Date.now() / 1000 => second *60
+				exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 ), // After 24 hours it will expire //Date.now() / 1000 => second *60
 				iat: Math.floor(Date.now() / 1000)
 			}, "FunctionUp Group No 57");
 
@@ -66,9 +55,8 @@ const userLogin = async function (req, res) {
 		let data = {
 			token: token,
 			userId: userInDb._id.toString(),
-			exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // After 50 min it will expire 
+			exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // After 24 hours it will expire 
 			iat: Math.floor(Date.now() / 1000)
-
 		}
 		res.status(201).send({ status: true, message: "Token has been successfully generated.", data: data });
 	}
@@ -76,12 +64,6 @@ const userLogin = async function (req, res) {
 		console.log("This is the error :", err.message)
 		res.status(500).send({ status: false, message: "Error", error: err.message })
 	}
-
 }
 
-
-
 module.exports = { createUser, userLogin }
-
-
-

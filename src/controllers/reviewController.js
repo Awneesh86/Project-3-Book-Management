@@ -24,7 +24,6 @@ const createReview = async function (req, res) {
 
         if (Object.keys(rest).length > 0) return res.status(400).send({ status: false, message: `You can not fill these:-( ${Object.keys(rest)} ) data ` })
 
-
         data["bookId"] = bookIdInParam
 
         if (!rating) {
@@ -38,7 +37,6 @@ const createReview = async function (req, res) {
 
         if (typeof reviewedBy == "string" && reviewedBy.trim() == "") {
             data.reviewedBy = "Guest"
-            reviewedBy = "Guest"
         }
 
         if (!reviewedBy) return res.status(400).send({ status: false, message: "reviewedBy (reviewer's name) is mandatory" })
@@ -65,13 +63,11 @@ const createReview = async function (req, res) {
         result.reviewsData = reviewsData
 
         return res.status(201).send({ status: true, message: "Reviewes Added Succesfully", data: result })
-
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }
 }
-
 
 //<=======================Update Book Review by bookId &API=================================>
 const updateReview = async function (req, res) {
@@ -79,7 +75,6 @@ const updateReview = async function (req, res) {
         let bookIs = req.params.bookId;
         let reviewId = req.params.reviewId;
         let data = req.body;
-
 
         if (!ObjectId(bookIs)) return res.status(400).send({ status: false, message: "Invalid BookId" })
 
@@ -128,10 +123,8 @@ const deleteByBookId_ReviewId = async function (req, res) {
 
         if (!ObjectId(reviewId)) { return res.status(400).send({ status: false, message: "reviewId is not in format" }) }
 
-
         const book_in_DB = await bookModel.findOne({ _id: bookId, isDeleted: false })
         if (!book_in_DB) return res.status(404).send({ status: false, message: "No book found" })
-
 
         const review_in_DB = await reviewModel.findOne({ _id: reviewId, isDeleted: false })
         if (!review_in_DB) return res.status(404).send({ status: false, message: "No review found" })
@@ -147,12 +140,10 @@ const deleteByBookId_ReviewId = async function (req, res) {
         console.log(updatedReview);
 
         return res.status(200).send({ status: true, message: "review is successfully deleted" })
-
     }
     catch (err) {
         return res.status(500).send({ status: false, message: err.message })
     }
 }
-
 
 module.exports = { createReview, updateReview, deleteByBookId_ReviewId }

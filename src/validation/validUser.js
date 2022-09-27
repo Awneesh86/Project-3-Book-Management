@@ -1,5 +1,4 @@
-
-// ------------- validation of user title -------------
+// ------------- validation of user title -------------//
 const validTitle = function (value) {
     if (typeof value !== "string") { return false }
     else {
@@ -11,8 +10,7 @@ const validTitle = function (value) {
     }
 }
 
-// ------------- validation of user name -------------
-
+// ------------- validation of user name -------------//
 const validName = function (value) {
     if (typeof value == "string") {
         if (value.trim() !== "") {
@@ -22,16 +20,13 @@ const validName = function (value) {
     } else { return false }
 }
 
-// ------------- validation of phone no. -------------
-
+// ------------- validation of phone no. -------------//
 const validPhone = function (value) {
     let regex = /^[6-9]{1}[0-9]{9}$/
     return regex.test(value.toString().trim())
-
 }
 
-// ------------- validation of email -------------
-
+// ------------- validation of email -------------//
 const validEmail = function (value) {
     if (typeof value !== "string" || value.trim() == "") { return false }
     else {
@@ -41,9 +36,7 @@ const validEmail = function (value) {
         else { return false }
     }
 }
-
-// ------------- validation of password -------------
-
+// ------------- validation of password -------------//
 const validPassword = function (value) {
     if (typeof value !== "string" || value.trim() == "") { return false }
     else {
@@ -51,9 +44,7 @@ const validPassword = function (value) {
         return isValid.test(value.trim());
     }
 }
-
-// ------------- validation of password -------------
-
+// ------------- validation of password -------------//
 const validStreet = function (value) {
     if (typeof value == "string") {
         if (value.trim() !== "") {
@@ -63,13 +54,11 @@ const validStreet = function (value) {
     } else { return false }
 }
 
-// --------------- this is for author validation -----------------
-
+// --------------- this is for author validation -----------------//
 const validPincode = function (value) {
     if (typeof value !== "string" || value.trim() == "") { return false }
     var isValid = /^([0-9]){6}$/
     return isValid.test(value.trim());
 }
-
 
 module.exports = { validTitle, validName, validPhone, validEmail, validPassword, validStreet, validPincode }
